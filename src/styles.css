@@ -1,4 +1,59 @@
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
-    overflow-x: hidden;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: lightgreen;
+}
+
+header {
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+}
+
+img {
+    height: fit-content;
+    width: 50%;
+}
+
+main {
+    width: 100%;
+    height: 90vh; /* Adjust this value to match the height of your header */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(40, 2.5%);
+    grid-template-rows: repeat(20, 1fr); /* Using viewport height to fill screen */
+    width: 75%;
+    height: auto;
+    opacity: 50%;
+}
+
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #000;
+    font-size: 12px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    transition: background-color 0.3s;
+}
+
+.cell:hover {
+    background-color: #dcdcdc;
 }
