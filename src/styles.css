@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background-color: lightgreen;
 }
 
 html, body {
@@ -15,19 +16,19 @@ html, body {
 }
 
 header {
-    height: 10vh;
+    height: 15vh;
     display: flex;
     justify-content: center;
 }
 
 img {
     height: fit-content;
-    width: 50%;
+    height: 100%;
 }
 
 main {
     width: 100%;
-    height: 90vh; /* Adjust this value to match the height of your header */
+    height: 85vh; /* Adjust this value to match the height of your header */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,10 +40,16 @@ main {
     grid-template-rows: repeat(20, 1fr); /* Using viewport height to fill screen */
     width: 75%;
     height: auto;
-    opacity: 50%;
+    
+}
+
+.snake {
+    background-color: rgb(211, 11, 11);
+    opacity: 100%;
 }
 
 .cell {
+    opacity: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,3 +64,5 @@ main {
 .cell:hover {
     background-color: #dcdcdc;
 }
+
+
