@@ -49,11 +49,6 @@ function PlayerControl() {
             clearInterval(moveInterval);
         }
 
-        // Keyup event listener to stop movement when another key is pressed
-        document.addEventListener("keydown", function(event) {
-        activeKey = event.key.toLowerCase();
-    });
-
         // Start the interval based on the current direction
         moveInterval = setInterval(function() {
             if (direction === 'left') {
@@ -69,6 +64,12 @@ function PlayerControl() {
                 activeRow += 1;
                 console.log("Moving down. Current row:", activeRow);
             }
+        
+        //Check whether the snake has reached the edge 
+        if (activeCol < 0 || activeCol > 38 || activeRow < 0 || activeRow > 18) {
+            clearInterval(moveInterval);
+            console.log("YOU'RE DEAD")
+        }
             board[activeRow][activeCol] = 1;
             console.log(board)
         }, 1000); // 1000ms = 1 second
