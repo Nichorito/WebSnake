@@ -38,12 +38,11 @@ function PlayerControl() {
     let board = gameManager.getBoard();
     let activeRow = 10;
     let activeCol = 20;
-    let activeKey;
+    let direction = '';
     let moveInterval;   // To store the interval ID
-    let isMoving = false; // Flag to check if movement is already happening
 
     // Function to handle movement logic based on key pressed
-    const startMovement = (direction) => {
+    const moveSnake = (direction) => {
         // Clear the previous interval if it's already moving
         if (moveInterval) {
             clearInterval(moveInterval);
@@ -51,56 +50,63 @@ function PlayerControl() {
 
         // Start the interval based on the current direction
         moveInterval = setInterval(function() {
+            
+            board[activeRow][activeCol] = 0;
+
             if (direction === 'left') {
                 activeCol -= 1;
-                console.log("Moving left. Current column:", activeCol);
+                console.log("\n\nMoving left. Current column:", activeCol);
             } else if (direction === 'right') {
                 activeCol += 1;
-                console.log("Moving right. Current column:", activeCol);
+                console.log("\n\nMoving right. Current column:", activeCol);
             } else if (direction === 'up') {
                 activeRow -= 1;
-                console.log("Moving up. Current row:", activeRow);
+                console.log("\n\nMoving up. Current row:", activeRow);
             } else if (direction === 'down') {
                 activeRow += 1;
-                console.log("Moving down. Current row:", activeRow);
+                console.log("\n\nMoving down. Current row:", activeRow);
             }
         
-        //Check whether the snake has reached the edge 
-        if (activeCol < 0 || activeCol > 38 || activeRow < 0 || activeRow > 18) {
-            clearInterval(moveInterval);
-            console.log("YOU'RE DEAD")
-        }
+            //Check whether the snake has reached the edge 
+            if (activeCol < 1 || activeCol > 38 || activeRow < 1 || activeRow > 18) {
+                clearInterval(moveInterval);
+                console.log("YOU'RE DEAD")
+            }   
+            //Set the cell to be active
+            console.log("\nUpdating board: Active row is " + activeRow + "  Active Column is " + activeCol)
             board[activeRow][activeCol] = 1;
             console.log(board)
         }, 1000); // 1000ms = 1 second
     }
 
-    // Keydown event listener to detect direction
     document.addEventListener("keydown", function(event) {
-        activeKey = event.key.toLowerCase();
+        const activeKey = event.key.toLowerCase();
+        let newDirection = '';
 
-        // Check for direction keys and start movement in that direction
-        if (!isMoving) {
-            if (activeKey === 'a') {   // Move left
-                console.log("\nYou pressed the 'A' key! Moving Left:");
-                startMovement('left');
-                //isMoving = true;
-            } else if (activeKey === 'd') {  // Move right
-                console.log("\nYou pressed the 'D' key! Moving Right:");
-                startMovement('right');
-               // isMoving = true;
-            } else if (activeKey === 'w') {  // Move up
-                console.log("\nYou pressed the 'W' key! Moving Up:");
-                startMovement('up');
-               // isMoving = true;
-            } else if (activeKey === 's') {  // Move down
-                console.log("\nYou pressed the 'S' key! Moving Down:");
-                startMovement('down');
-               // isMoving = true;
-            }
+        // Update the direction based on key press
+        if (activeKey === 'a' && direction !== 'left') {   // Move left
+            console.log("\nYou pressed the 'A' key! Moving Left:");
+            newDirection = 'left';
+        } else if (activeKey === 'd' && direction !== 'right') {  // Move right
+            console.log("\nYou pressed the 'D' key! Moving Right:");
+            newDirection = 'right';
+        } else if (activeKey === 'w' && direction !== 'up') {  // Move up
+            console.log("\nYou pressed the 'W' key! Moving Up:");
+            newDirection = 'up';
+        } else if (activeKey === 's' && direction !== 'down') {  // Move down
+            console.log("\nYou pressed the 'S' key! Moving Down:");
+            newDirection = 'down';
+        } else if (activeKey === 'p') {
+            console.log("\n\n\nPausing\n\n\n");
+            clearInterval(moveInterval);
+        }
+
+        // Only start movement if the direction changes
+        if (newDirection && newDirection !== direction) {
+            direction = newDirection;
+            moveSnake(direction); // Restart the interval with the new direction
         }
     });
-
     
 }
 
