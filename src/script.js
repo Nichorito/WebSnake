@@ -12,6 +12,8 @@ function GameManager() {
         console.log("\n\n\nIts time to play the game");
         
         resetBoard();
+
+        boardArray[ROWS/2][COLUMNS/2] = 1;
     }
 
     //Resets the console/logic board
@@ -24,9 +26,6 @@ function GameManager() {
                 boardArray[row][col] = 0;
             }
         }
-
-        //Create the snake
-        boardArray[10][20] = 1;
 
         //Display board
         console.log("\nHere is the new board:\n");
@@ -89,16 +88,16 @@ function PlayerControl() {
         let newDirection = '';
 
         // Update the direction based on key press
-        if (activeKey === 'a' && direction !== 'left') {   // Move left
+        if (activeKey === 'a' && direction !== 'left' && direction !== 'right') {   // Move left
             console.log("\nYou pressed the 'A' key! Moving Left:");
             newDirection = 'left';
-        } else if (activeKey === 'd' && direction !== 'right') {  // Move right
+        } else if (activeKey === 'd' && direction !== 'right' && direction !== 'left') {  // Move right
             console.log("\nYou pressed the 'D' key! Moving Right:");
             newDirection = 'right';
-        } else if (activeKey === 'w' && direction !== 'up') {  // Move up
+        } else if (activeKey === 'w' && direction !== 'up' && direction !== 'down') {  // Move up
             console.log("\nYou pressed the 'W' key! Moving Up:");
             newDirection = 'up';
-        } else if (activeKey === 's' && direction !== 'down') {  // Move down
+        } else if (activeKey === 's' && direction !== 'down' && direction !== 'up') {  // Move down
             console.log("\nYou pressed the 'S' key! Moving Down:");
             newDirection = 'down';
         } else if (activeKey === 'p') {
@@ -139,7 +138,7 @@ function UIManager() {
     };
     //Create initial grid
 
-    const createGrid = () =>{
+    const createGrid = () => {
         let board = gameManager.getBoard();
         for (let row = 0; row < ROWS; row++) {
             for (let col = 0; col < COLUMNS; col++) {
@@ -147,9 +146,20 @@ function UIManager() {
                 cell.classList.add('cell');
                 cell.setAttribute('data-row', row);
                 cell.setAttribute('data-col', col);
-                cell.setAttribute('id', `cell${row}/${col}`)
+                cell.setAttribute('id', `cell${row}/${col}`);
                 gridContainer.appendChild(cell);
+                setColor(row, col, cell); // Call setColor to set the cell's color
             }
+        }
+        updateGrid();
+    }
+    
+    const setColor = (row, col, cell) => {
+        // Use the sum of row and column to determine color
+        if ((row + col) % 2 === 0) {
+            cell.classList.add('darkCell'); // Even sum: green
+        } else {
+            cell.classList.add('lightGreen'); // Odd sum: lightgreen
         }
     }
     

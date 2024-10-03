@@ -40,6 +40,7 @@ main {
     grid-template-rows: repeat(20, 1fr); /* Using viewport height to fill screen */
     width: fit-content;
     height: auto;
+    border: 5px black solid
     
 }
 
@@ -53,9 +54,14 @@ main {
     border: 1px solid #000;
     font-size: 12px;
     text-align: center;
-    cursor: pointer;
-    background-color: #f0f0f0;
-    transition: background-color 0.3s;
+}
+
+.lightCell {
+    background-color: lightgreen;
+}
+
+.darkCell {
+    background-color: green;
 }
 
 .active {
@@ -63,8 +69,6 @@ main {
     opacity: 100%;
 }
 
-.cell:hover {
-    background-color: #dcdcdc;
-}
+
 
 
