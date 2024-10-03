@@ -1,8 +1,12 @@
 import "./styles.css";
+const ROWS = 20;
+const COLUMNS = 40;
 
 function GameManager() { 
     let ui = UIManager();
     let boardArray = [];
+
+    
     //Create snake
     const startGame = () => {
         console.log("\n\n\nIts time to play the game");
@@ -14,9 +18,9 @@ function GameManager() {
     const resetBoard = () =>{
         
         //Create and fill array with 0s
-        for (let row = 0; row < 20; row++) {
+        for (let row = 0; row < ROWS; row++) {
             boardArray[row] = [];
-            for (let col = 0; col < 40; col++) {
+            for (let col = 0; col < COLUMNS; col++) {
                 boardArray[row][col] = 0;
             }
         }
@@ -36,8 +40,8 @@ function GameManager() {
 
 function PlayerControl() {
     let board = gameManager.getBoard();
-    let activeRow = 10;
-    let activeCol = 20;
+    let activeRow = ROWS/2;
+    let activeCol = COLUMNS/2;
     let direction = '';
     let moveInterval;   // To store the interval ID
 
@@ -76,7 +80,8 @@ function PlayerControl() {
             console.log("\nUpdating board: Active row is " + activeRow + "  Active Column is " + activeCol)
             board[activeRow][activeCol] = 1;
             console.log(board)
-        }, 1000); // 1000ms = 1 second
+            uiManager.updateGrid();
+        }, 250); // 1000ms = 1 second
     }
 
     document.addEventListener("keydown", function(event) {
@@ -119,22 +124,30 @@ function UIManager() {
     const gridContainer = document.getElementById('grid');
 
     const updateGrid = () => {
-
-    }
-
-
+        let board = gameManager.getBoard();
+        for (let row = 0; row < ROWS; row++) {
+            for (let col = 0; col < COLUMNS; col++) {
+                let cell = document.getElementById(`cell${row}/${col}`);
+                if (board[row][col] == 1) {
+                    cell.classList.add('active'); // Highlight active cells (e.g., snake)
+                    console.log(`Checking cell${row}${col}:  Value is ${board[row][col]}`)
+                } else {
+                    cell.classList.remove('active');
+                }
+            }
+        }
+    };
     //Create initial grid
 
     const createGrid = () =>{
-        
-        for (let row = 0; row < 20; row++) {
-            for (let col = 0; col < 40; col++) {
+        let board = gameManager.getBoard();
+        for (let row = 0; row < ROWS; row++) {
+            for (let col = 0; col < COLUMNS; col++) {
                 let cell = document.createElement('div');
                 cell.classList.add('cell');
                 cell.setAttribute('data-row', row);
                 cell.setAttribute('data-col', col);
-                cell.setAttribute('id', `cell${row}${col}`)
-                cell.innerText = `[${row}][${col}]`;
+                cell.setAttribute('id', `cell${row}/${col}`)
                 gridContainer.appendChild(cell);
             }
         }
@@ -143,13 +156,12 @@ function UIManager() {
     return {createGrid, updateGrid, gridContainer}
 }
 
+const gameManager = GameManager();
+gameManager.startGame();
+window.gameManager = gameManager;
 
 
 const uiManager = UIManager();
 uiManager.createGrid();
-
-const gameManager = GameManager();
-gameManager.startGame();
-window.gameManager = gameManager;
 
 PlayerControl();
