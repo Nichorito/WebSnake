@@ -38,32 +38,71 @@ function PlayerControl() {
     let board = gameManager.getBoard();
     let activeRow = 10;
     let activeCol = 20;
-    const activeCell = board[activeRow][activeRow];
+    let activeKey;
+    let moveInterval;   // To store the interval ID
+    let isMoving = false; // Flag to check if movement is already happening
 
-    document.addEventListener("keydown", function(event) {
-        if (event.key === "a" || event.key === "A") {
-            console.log("\nYou pressed the 'A' key!  Moving Left:");
-            activeCol = activeCol - 1;
-        }
-        else if (event.key === "w" || event.key === "W") {
-            console.log("You pressed the 'W' key!  Moving up:");
-            activeRow = activeRow - 1;
-        }
-        else if (event.key === "d" || event.key === "D") {
-            console.log("You pressed the 'D' key!  Moving right:");
-            activeCol = activeCol + 1;
-        }
-        else if (event.key === "s" || event.key === "S") {
-            console.log("You pressed the 'S' key!  Moving down:");
-            activeRow = activeRow + 1;
+    // Function to handle movement logic based on key pressed
+    const startMovement = (direction) => {
+        // Clear the previous interval if it's already moving
+        if (moveInterval) {
+            clearInterval(moveInterval);
         }
 
-        console.log(board);
-        board[activeRow][activeCol] = 1;
+        // Keyup event listener to stop movement when another key is pressed
+        document.addEventListener("keydown", function(event) {
+        activeKey = event.key.toLowerCase();
     });
 
-    return {}
+        // Start the interval based on the current direction
+        moveInterval = setInterval(function() {
+            if (direction === 'left') {
+                activeCol -= 1;
+                console.log("Moving left. Current column:", activeCol);
+            } else if (direction === 'right') {
+                activeCol += 1;
+                console.log("Moving right. Current column:", activeCol);
+            } else if (direction === 'up') {
+                activeRow -= 1;
+                console.log("Moving up. Current row:", activeRow);
+            } else if (direction === 'down') {
+                activeRow += 1;
+                console.log("Moving down. Current row:", activeRow);
+            }
+            board[activeRow][activeCol] = 1;
+            console.log(board)
+        }, 1000); // 1000ms = 1 second
+    }
+
+    // Keydown event listener to detect direction
+    document.addEventListener("keydown", function(event) {
+        activeKey = event.key.toLowerCase();
+
+        // Check for direction keys and start movement in that direction
+        if (!isMoving) {
+            if (activeKey === 'a') {   // Move left
+                console.log("\nYou pressed the 'A' key! Moving Left:");
+                startMovement('left');
+                //isMoving = true;
+            } else if (activeKey === 'd') {  // Move right
+                console.log("\nYou pressed the 'D' key! Moving Right:");
+                startMovement('right');
+               // isMoving = true;
+            } else if (activeKey === 'w') {  // Move up
+                console.log("\nYou pressed the 'W' key! Moving Up:");
+                startMovement('up');
+               // isMoving = true;
+            } else if (activeKey === 's') {  // Move down
+                console.log("\nYou pressed the 'S' key! Moving Down:");
+                startMovement('down');
+               // isMoving = true;
+            }
+        }
+    });
+
+    
 }
+
 
 //////////////////////
 //// UI ELEMENTS /////
